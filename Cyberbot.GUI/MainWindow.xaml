@@ -1,0 +1,16 @@
+
+<Window x:Class="Cyberbot.GUI.MainWindow"
+ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ Title="Cyberbot GUI"
+ Height="450"
+ Width="700">
+
+<Grid Margin="10">
+<TextBlock Text="Cyberbot GUI Running!"
+           FontSize="24"
+           VerticalAlignment="Center"
+           HorizontalAlignment="Center"/>
+</Grid>
+
+</Window>

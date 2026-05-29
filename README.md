@@ -1,1 +1,6 @@
-# CyberbotProg6221
+
+# Cyberbot Full Solution
+
+Contains:
+- Console Application
+- GUI WPF Application

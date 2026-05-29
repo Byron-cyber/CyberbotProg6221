@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "dgSpecHash": "PbCPWwvNd5M=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Byron\\Desktop\\CyberbotProject\\CyberbotGUI\\CyberbotGUI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Byron\\.nuget\\packages\\system.speech\\10.0.5\\system.speech.10.0.5.nupkg.sha512",
+    "C:\\Users\\Byron\\.nuget\\packages\\system.windows.extensions\\10.0.0\\system.windows.extensions.10.0.0.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1510",
+      "level": "Warning",
+      "message": "PackageReference System.Windows.Extensions will not be pruned. Consider removing this package from your dependencies, as it is likely unnecessary.",
+      "projectPath": "C:\\Users\\Byron\\Desktop\\CyberbotProject\\CyberbotGUI\\CyberbotGUI.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Byron\\Desktop\\CyberbotProject\\CyberbotGUI\\CyberbotGUI.csproj",
+      "libraryId": "System.Windows.Extensions",
+      "targetGraphs": [
+        "net10.0-windows7.0"
+      ]
+    }
+  ]
+}

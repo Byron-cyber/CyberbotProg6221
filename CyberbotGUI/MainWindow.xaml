@@ -1,0 +1,505 @@
+<Window x:Class="CyberbotGUI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CyberBot — Cybersecurity Awareness Assistant"
+        Height="740" Width="1060"
+        MinHeight="520" MinWidth="760"
+        WindowStartupLocation="CenterScreen"
+        Background="#0D1117">
+
+    <Window.Resources>
+
+        <!-- ── Quick Topic Button ──────────────────────────────────── -->
+        <Style x:Key="QuickTopicButton" TargetType="Button">
+            <Setter Property="Background" Value="#21262D"/>
+            <Setter Property="Foreground" Value="#8B949E"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="BorderBrush" Value="#30363D"/>
+            <Setter Property="Padding" Value="9,6"/>
+            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="FontSize" Value="11.5"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="5"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#2D333B"/>
+                                <Setter Property="Foreground" Value="#00FF88"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#00CC6A"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#161B22"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ── Send Button ────────────────────────────────────────── -->
+        <Style x:Key="SendButton" TargetType="Button">
+            <Setter Property="Background" Value="#238636"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Padding" Value="22,0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="7"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#2EA043"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#1A7F37"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter TargetName="Bd" Property="Background" Value="#21262D"/>
+                                <Setter Property="Foreground" Value="#484F58"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ── Input TextBox ──────────────────────────────────────── -->
+        <Style x:Key="InputBox" TargetType="TextBox">
+            <Setter Property="Background" Value="#0D1117"/>
+            <Setter Property="Foreground" Value="#E6EDF3"/>
+            <Setter Property="CaretBrush" Value="#00FF88"/>
+            <Setter Property="SelectionBrush" Value="#1F6FEB"/>
+            <Setter Property="BorderBrush" Value="#30363D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="14,0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="7">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#00CC6A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ── Voice Toggle Button ───────────────────────────────── -->
+        <Style x:Key="VoiceToggle" TargetType="ToggleButton">
+            <Setter Property="Background" Value="#21262D"/>
+            <Setter Property="Foreground" Value="#8B949E"/>
+            <Setter Property="BorderBrush" Value="#30363D"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="ToolTip" Value="Toggle voice responses"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="7"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="Bd" Property="Background" Value="#0D2D3A"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#00CC6A"/>
+                                <Setter Property="Foreground" Value="#00FF88"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#00CC6A"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ── Scrollbar ──────────────────────────────────────────── -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Width" Value="6"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid>
+                            <Track x:Name="PART_Track" IsDirectionReversed="True">
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#30363D" CornerRadius="3"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>    <!-- Header          -->
+            <RowDefinition Height="*"/>       <!-- Chat + Sidebar  -->
+            <RowDefinition Height="Auto"/>    <!-- Sentiment bar   -->
+            <RowDefinition Height="60"/>      <!-- Input area      -->
+        </Grid.RowDefinitions>
+
+        <!-- ════════════════════════════════════════════════
+             HEADER
+        ════════════════════════════════════════════════ -->
+        <Border Grid.Row="0"
+                Background="#161B22"
+                BorderBrush="#00CC6A"
+                BorderThickness="0,0,0,2">
+            <Grid Margin="16,10,16,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- ASCII logo block -->
+                <Border Grid.Column="0"
+                        Background="#0D1117"
+                        CornerRadius="8"
+                        Padding="10,6"
+                        Margin="0,0,14,0"
+                        VerticalAlignment="Center">
+                    <TextBlock FontFamily="Consolas"
+                               FontSize="8.5"
+                               Foreground="#00FF88"
+                               LineHeight="13"
+                               Text=" ██████╗██╗   ██╗██████╗ ███████╗██████╗ &#x0a;██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗&#x0a;██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝&#x0a;██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗&#x0a;╚██████╗   ██║   ██████╔╝███████╗██║  ██║&#x0a; ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝"/>
+                </Border>
+
+                <!-- Title + subtitle -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="CYBERSECURITY AWARENESS ASSISTANT"
+                               Foreground="#00FF88"
+                               FontSize="17"
+                               FontWeight="Bold"
+                               FontFamily="Consolas"/>
+                    <TextBlock Text="Your personal guide to staying safe online  •  South Africa"
+                               Foreground="#484F58"
+                               FontSize="11"
+                               Margin="0,3,0,0"/>
+                </StackPanel>
+
+                <!-- User + status -->
+                <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">
+                    <TextBlock x:Name="UserNameLabel"
+                               Text=""
+                               Foreground="#E6EDF3"
+                               FontFamily="Consolas"
+                               FontSize="12"
+                               HorizontalAlignment="Right"
+                               Margin="0,0,0,3"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Ellipse Width="7" Height="7" Fill="#00FF88" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                        <TextBlock Text="ONLINE"
+                                   Foreground="#00FF88"
+                                   FontFamily="Consolas"
+                                   FontSize="11"/>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- ════════════════════════════════════════════════
+             CONTENT AREA  (Chat  |  Sidebar)
+        ════════════════════════════════════════════════ -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="230"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- ── CHAT MESSAGES ───────────────────────────────── -->
+            <ScrollViewer Grid.Column="0"
+                          x:Name="ChatScrollViewer"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Background="#0D1117">
+                <ItemsControl x:Name="MessagesControl" Margin="10,8,10,8">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="2,4">
+                                <!-- Message bubble -->
+                                <Border x:Name="Bubble"
+                                        HorizontalAlignment="Left"
+                                        Background="#1C2128"
+                                        CornerRadius="14,14,14,4"
+                                        MaxWidth="580"
+                                        Padding="15,11"
+                                        Margin="0,0,90,0">
+                                    <StackPanel>
+                                        <!-- Sender label -->
+                                        <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                            <TextBlock x:Name="SenderLabel"
+                                                       Text="🤖  CyberBot"
+                                                       Foreground="#00FF88"
+                                                       FontSize="11"
+                                                       FontWeight="Bold"
+                                                       FontFamily="Consolas"/>
+                                        </StackPanel>
+                                        <!-- Message text -->
+                                        <TextBlock Text="{Binding Text}"
+                                                   TextWrapping="Wrap"
+                                                   Foreground="#CDD9E5"
+                                                   FontFamily="Segoe UI"
+                                                   FontSize="13"
+                                                   LineHeight="21"/>
+                                        <!-- Timestamp -->
+                                        <TextBlock Text="{Binding Timestamp}"
+                                                   Foreground="#484F58"
+                                                   FontSize="10"
+                                                   HorizontalAlignment="Right"
+                                                   Margin="0,6,0,0"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsBot}" Value="False">
+                                    <Setter TargetName="Bubble" Property="HorizontalAlignment" Value="Right"/>
+                                    <Setter TargetName="Bubble" Property="Background" Value="#0D2D4A"/>
+                                    <Setter TargetName="Bubble" Property="CornerRadius" Value="14,14,4,14"/>
+                                    <Setter TargetName="Bubble" Property="Margin" Value="90,0,0,0"/>
+                                    <Setter TargetName="SenderLabel" Property="Text" Value="👤  You"/>
+                                    <Setter TargetName="SenderLabel" Property="Foreground" Value="#79C0FF"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+            <!-- ── MEMORY + QUICK TOPICS SIDEBAR ──────────────── -->
+            <Border Grid.Column="1"
+                    Background="#161B22"
+                    BorderBrush="#21262D"
+                    BorderThickness="1,0,0,0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="13,14,13,14">
+
+                        <!-- MEMORY section -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                            <TextBlock Text="🧠" FontSize="13" Margin="0,0,6,0"/>
+                            <TextBlock Text="MEMORY"
+                                       Foreground="#00FF88"
+                                       FontFamily="Consolas"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <TextBlock Text="NAME"
+                                   Foreground="#484F58"
+                                   FontSize="10"
+                                   FontFamily="Consolas"
+                                   Margin="0,0,0,2"/>
+                        <TextBlock x:Name="MemoryUserName"
+                                   Text="—"
+                                   Foreground="#E6EDF3"
+                                   FontSize="12.5"
+                                   Margin="0,0,0,10"
+                                   TextWrapping="Wrap"/>
+
+                        <TextBlock Text="FAVOURITE TOPIC"
+                                   Foreground="#484F58"
+                                   FontSize="10"
+                                   FontFamily="Consolas"
+                                   Margin="0,0,0,2"/>
+                        <TextBlock x:Name="MemoryFavTopic"
+                                   Text="—"
+                                   Foreground="#E6EDF3"
+                                   FontSize="12.5"
+                                   Margin="0,0,0,12"
+                                   TextWrapping="Wrap"/>
+
+                        <Rectangle Height="1" Fill="#21262D" Margin="0,0,0,12"/>
+
+                        <!-- TOPICS DISCUSSED -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                            <TextBlock Text="📚" FontSize="13" Margin="0,0,6,0"/>
+                            <TextBlock Text="DISCUSSED"
+                                       Foreground="#00FF88"
+                                       FontFamily="Consolas"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <ItemsControl x:Name="TopicsControl">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="#1C2128"
+                                            CornerRadius="5"
+                                            Padding="8,5"
+                                            Margin="0,2">
+                                        <TextBlock Text="{Binding}"
+                                                   Foreground="#8B949E"
+                                                   FontSize="11.5"
+                                                   TextWrapping="Wrap"/>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <Rectangle Height="1" Fill="#21262D" Margin="0,12,0,12"/>
+
+                        <!-- QUICK TOPICS -->
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,9">
+                            <TextBlock Text="⚡" FontSize="13" Margin="0,0,6,0"/>
+                            <TextBlock Text="QUICK TOPICS"
+                                       Foreground="#00FF88"
+                                       FontFamily="Consolas"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <Button Content="🔐  Password Safety"    Tag="Tell me about password safety"                Style="{StaticResource QuickTopicButton}" Click="QuickTopic_Click"/>
+                        <Button Content="🎣  Phishing &amp; Scams"    Tag="What is phishing and how do I avoid it?"     Style="{StaticResource QuickTopicButton}" Click="QuickTopic_Click"/>
+                        <Button Content="🕵️  Online Privacy"     Tag="How can I protect my privacy online?"        Style="{StaticResource QuickTopicButton}" Click="QuickTopic_Click"/>
+                        <Button Content="🦠  Malware &amp; Viruses"   Tag="Tell me about malware and ransomware"        Style="{StaticResource QuickTopicButton}" Click="QuickTopic_Click"/>
+                        <Button Content="🌐  VPN Security"       Tag="How does a VPN protect me?"                  Style="{StaticResource QuickTopicButton}" Click="QuickTopic_Click"/>
+                        <Button Content="🔑  Two-Factor Auth"    Tag="What is two-factor authentication 2FA?"      Style="{StaticResource QuickTopicButton}" Click="QuickTopic_Click"/>
+                        <Button Content="🖥️  Safe Browsing"      Tag="Give me tips for safe browsing online"       Style="{StaticResource QuickTopicButton}" Click="QuickTopic_Click"/>
+                        <Button Content="🎭  Social Engineering" Tag="What is social engineering?"                 Style="{StaticResource QuickTopicButton}" Click="QuickTopic_Click"/>
+
+                        <Rectangle Height="1" Fill="#21262D" Margin="0,12,0,12"/>
+
+                        <Button Content="🗑️  Clear Chat"
+                                Style="{StaticResource QuickTopicButton}"
+                                Click="ClearChat_Click"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- ════════════════════════════════════════════════
+             SENTIMENT BAR
+        ════════════════════════════════════════════════ -->
+        <Border Grid.Row="2"
+                x:Name="SentimentBar"
+                Background="#161B22"
+                BorderBrush="#21262D"
+                BorderThickness="0,1,0,0"
+                Padding="16,7"
+                Visibility="Collapsed">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="SentimentIcon"
+                           Grid.Column="0"
+                           FontSize="16"
+                           Margin="0,0,10,0"
+                           VerticalAlignment="Center"/>
+                <TextBlock x:Name="SentimentText"
+                           Grid.Column="1"
+                           Foreground="#CDD9E5"
+                           FontFamily="Segoe UI"
+                           FontSize="12"
+                           TextWrapping="Wrap"
+                           VerticalAlignment="Center"/>
+                <Button Grid.Column="2"
+                        Content="✕"
+                        Foreground="#484F58"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        FontSize="12"
+                        Cursor="Hand"
+                        VerticalAlignment="Center"
+                        Margin="8,0,0,0"
+                        Click="DismissSentiment_Click"/>
+            </Grid>
+        </Border>
+
+        <!-- ════════════════════════════════════════════════
+             INPUT AREA
+        ════════════════════════════════════════════════ -->
+        <Border Grid.Row="3"
+                Background="#161B22"
+                BorderBrush="#21262D"
+                BorderThickness="0,1,0,0">
+            <Grid Margin="12,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Voice toggle -->
+                <ToggleButton Grid.Column="0"
+                              x:Name="VoiceToggle"
+                              Content="🔊"
+                              Style="{StaticResource VoiceToggle}"
+                              Margin="0,0,8,0"/>
+
+                <!-- Text input -->
+                <TextBox Grid.Column="1"
+                         x:Name="InputTextBox"
+                         Style="{StaticResource InputBox}"
+                         KeyDown="InputTextBox_KeyDown"
+                         GotFocus="InputTextBox_GotFocus"
+                         LostFocus="InputTextBox_LostFocus"/>
+
+                <!-- Send button -->
+                <Button Grid.Column="2"
+                        x:Name="SendButton"
+                        Content="Send  ➤"
+                        Style="{StaticResource SendButton}"
+                        Click="SendButton_Click"
+                        Margin="8,0,0,0"/>
+            </Grid>
+        </Border>
+
+    </Grid>
+</Window>
